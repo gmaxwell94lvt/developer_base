@@ -1,0 +1,39 @@
+version: "3.7"
+name: lvt
+
+networks:
+  local:
+    name: lvt.local
+    external: true
+
+services:
+  liveunit-video-service:
+    container_name: liveunit-authentication-service
+    stdin_open: true
+    volumes:
+      - .:/usr/src/
+      - ./data:/tmp/data/cache/
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: dev
+      args:
+        ARTIFACTORY_USERNAME: ${ARTIFACTORY_USERNAME}
+        ARTIFACTORY_PASSWORD: ${ARTIFACTORY_PASSWORD}
+    networks:
+      - local
+    environment:
+      HORUS_HOST: "horus.db"
+      HORUS_DATABASE: "horus"
+      HORUS_USERNAME: "horus"
+      HORUS_PASSWORD: "horus"
+      HORUS_PORT: 3306
+      HORUS_POOL_MIN: 2
+      HORUS_POOL_MAX: 10
+      API_PORT: 3001
+      CURSOR_BASE_URL: "http://localhost:3001"
+      APP_ENV: dev
+      AWS_ACM_PCA_ARNS: "arn::::::,arn::::::"
+    ports:
+      - "3000:3000"
+    restart: always

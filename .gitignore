@@ -1,4 +1,8 @@
 # Byte-compiled / optimized / DLL files
+# built upon PyCharm by Greg Maxwell
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+
 __pycache__/
 *.py[cod]
 *$py.class
@@ -160,3 +164,35 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+_debri
+_secrets
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+
+Notes
+*.swp
+.DS_Store
+
+CloudFlareCheat.txt
+terraform.tfvars
+.idea
+.terraform
+.terraform.lock.hcl
+terraform.tfstate.backup
+terraform.tfstate
+terraform.tfstate.d
+# Ignore emacs backup files
+*~
+\#*\#
+.\#*
+*.pyc
+todo
+**/__pycache__/**
+.python-version
+*secrets*
+/helm/run_values.yaml

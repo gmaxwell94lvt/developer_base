@@ -1,0 +1,47 @@
+name: analysis
+
+on: [push]
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    services:
+      horus:
+        image: lvtech/horus-lite:latest
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          HORUS_USERNAME: horus
+          HORUS_PASSWORD: horus
+        credentials:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: |-
+          curl -Ls --user "${{ secrets.ARTIFACTORY_USERNAME }}:${{ secrets.ARTIFACTORY_PASSWORD }}" \
+            https://lvt.jfrog.io/artifactory/api/npm/npm/auth/lvt > .npmrc
+          npm ci
+      - name: Build
+        run: npm run build
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        if: always()
+        run: npm run test:ci
+        env:
+          APP_ENV: dev
+          CACHE_MODE: disabled
+          HORUS_HOST: localhost
+          HORUS_DATABASE: horus
+          HORUS_USERNAME: horus
+          HORUS_PASSWORD: horus
+          HORUS_PORT: 3306
+          AWS_REGION: test-region

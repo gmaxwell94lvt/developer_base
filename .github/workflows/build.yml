@@ -1,0 +1,16 @@
+name: docker-build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  details:
+
+  build:
+    uses: liveviewtech/actions/.github/workflows/buildx.yml@v1.0
+    with:
+      image-name: liveunit-authentication-service
+    secrets: inherit
