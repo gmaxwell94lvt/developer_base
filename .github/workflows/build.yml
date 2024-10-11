@@ -7,10 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  details:
-
   build:
     uses: liveviewtech/actions/.github/workflows/buildx.yml@v1.0
     with:
-      image-name: liveunit-authentication-service
+      image-name: gregs_test
     secrets: inherit
