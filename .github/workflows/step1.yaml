@@ -1,0 +1,37 @@
+name: 'Step1'
+on:
+  workflow_dispatch:
+
+  repository_dispatch:
+    types: [step1]
+
+jobs:
+  start:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    name: 'start step1 local'
+    steps:
+    - name: Dispatch lvt_module_release event
+      uses: actions/github-script@v7
+      env:
+        CLIENT_PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        script: |
+  
+          const { sha, run_id, next } = JSON.parse(process.env.CLIENT_PAYLOAD);
+          
+          const payload = {
+            sha: context.sha,
+            run_id: "${{ github.run_id }}",
+            next: "step2",
+            tasks: "apply"
+          };
+          console.log('Event payload:', JSON.stringify(payload, null, 2));
+
+#          const { owner, repo } = context.repo;
+#          await github.rest.repos.createDispatchEvent({
+#            owner, repo,
+#            event_type: next,
+#            client_payload: payload,
+#          });
